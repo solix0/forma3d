@@ -423,8 +423,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartUI();
 });
 
-const DISCORD_WEBHOOK_URL = 'DISCORD_WEBHOOK_PLACEHOLDER';
-
 // === ФУНКЦІЯ ВІДПРАВКИ В DISCORD ===
 async function sendToDiscord(content) {
     try {
