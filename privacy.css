@@ -281,3 +281,7 @@
 .contact-content textarea.pomylka::placeholder {
     color: #ff4d4d;
 }
+
+.footer-col .contact-line a {
+    display: inline !important; /* Примусово робимо посилання рядковими */
+}

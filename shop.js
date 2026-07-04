@@ -78,6 +78,11 @@ function openOrderModal(productName, btn) {
     const skuBtn = cardInfo.querySelector('.sku-btn');
     const productSKU = skuBtn ? skuBtn.innerText.replace('Арт: ', '') : 'Не вказано';
 
+    // 🔥 НОВЕ: Знаходимо тип друку (FDM/SLA) з бейджа
+    const card = cardInfo.closest('.card');
+    const badge = card.querySelector('.product-badge');
+    const printType = badge ? badge.innerText.trim() : 'Невідомо';
+
     if (!colorSelect.value) {
         colorSelect.classList.add("color-error");
         setTimeout(() => { colorSelect.classList.remove("color-error"); }, 1500);
@@ -89,7 +94,8 @@ function openOrderModal(productName, btn) {
     
     // Записуємо дані в приховані поля модалки
     document.getElementById("currentProductName").value = productName;
-    document.getElementById("currentProductSKU").value = productSKU; // Зберігаємо артикул
+    document.getElementById("currentProductSKU").value = productSKU;
+    document.getElementById("currentPrintType").value = printType; // 🔥 Зберігаємо тип друку
     document.getElementById("selectedProductTitle").innerText = `${productName} (${selectedColor})`;
     
     modal.style.display = "flex";
@@ -310,11 +316,17 @@ function addToCart(btn) {
         existing.qty += 1;
     } else {
         const sku = card.querySelector('.sku-btn')?.innerText || '';
+        // 🔥 Отримуємо тип друку з бейджа
+        const cardParent = card.closest('.card');
+        const badge = cardParent.querySelector('.product-badge');
+        const printType = badge ? badge.innerText.trim() : '';
+        
         cart.push({
             title,
             price,
             color,
             sku,
+            printType, // 🔥 Зберігаємо тип друку
             qty: 1
         });
     }
@@ -351,7 +363,7 @@ container.innerHTML += `
 <div style="margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
     <b>${item.title}</b><br>
     Колір: ${item.color}<br>
-    
+    ${item.printType ? `Тип: ${item.printType}` : ''}
     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
         
         <div class="qty-controls" style="user-select: none; -webkit-user-select: none; display: flex; align-items: center;">
@@ -453,6 +465,7 @@ async function validateAndSend() {
     const phone = phoneInput.value.trim();
     const productName = document.getElementById("currentProductName").value;
     const productSKU = document.getElementById("currentProductSKU").value;
+    const printType = document.getElementById("currentPrintType").value; // 🔥 Отримуємо тип друку
     
     if (phone.length < 5) {
         phoneInput.classList.add("input-error");
@@ -460,7 +473,7 @@ async function validateAndSend() {
         return;
     }
 
-    const message = `**📦 НОВЕ ЗАМОВЛЕННЯ**\n**Товар:** ${productName}\n**Арт:** ${productSKU}\n**Колір:** ${selectedColor}\n**Телефон:** \`${phone}\``;
+    const message = `**📦 НОВЕ ЗАМОВЛЕННЯ (${printType})**\n**Товар:** ${productName}\n**Арт:** ${productSKU}\n**Колір:** ${selectedColor}\n**Телефон:** \`${phone}\``;
 
     // Запускаємо анімацію відразу (UX: користувач бачить результат миттєво)
     showSuccessAnimation();
@@ -483,7 +496,7 @@ async function sendCartOrder() {
 
     let text = `**🛒 ЗАМОВЛЕННЯ З КОШИКА**\n\n`;
     cart.forEach((item, i) => {
-        text += `${i + 1}. **${item.title}** [${item.sku}]\n   Колір: ${item.color} | ${item.qty} шт.\n\n`;
+        text += `${i + 1}. **${item.title}** [${item.sku}] (${item.printType || 'Невідомо'})\n   Колір: ${item.color} | ${item.qty} шт.\n\n`;
     });
     text += `**Сума:** ${document.getElementById('cartTotal').innerText} ₴\n**Тел:** \`${phone}\``;
 

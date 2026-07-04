@@ -391,3 +391,30 @@
 .contact-content textarea.pomylka::placeholder {
     color: #ff4d4d;
 }
+
+.footer-col .contact-line a {
+    display: inline !important; /* Примусово робимо посилання рядковими */
+}
+
+/* Контейнер для кнопок */
+.buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* Простір між кнопками */
+  flex-wrap: wrap; /* Дозволяє кнопкам переноситися на мобільних */
+}
+
+/* Адаптація для маленьких екранів */
+@media (max-width: 480px) {
+  .buttons-wrapper {
+    flex-direction: column; /* Кнопки стають одна під одною */
+    gap: 15px; /* Менший відступ по вертикалі на мобільних */
+  }
+  
+  .buttons-wrapper .btn {
+    width: 100%; /* Кнопки на всю ширину */
+    max-width: 400px; /* Щоб не були надто розтягнутими */
+    text-align: center;
+  }
+}

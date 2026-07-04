@@ -864,3 +864,27 @@ body.processing > *:not(#orderLoader) {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+
+/* === БЕЙДЖІ НА ТОВАРАХ === */
+.product-badge {
+    position: absolute;
+    top: 15px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 14px;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 5;
+}
+
+/* Бейдж (білий з чорним текстом) */
+.badge {
+    background: empty;
+    color: rgb(255, 255, 255);
+    right: 15px;
+}
+
+.footer-col .contact-line a {
+    display: inline !important; /* Примусово робимо посилання рядковими */
+}
